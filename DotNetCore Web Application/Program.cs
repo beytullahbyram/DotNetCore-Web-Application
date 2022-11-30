@@ -1,3 +1,6 @@
+using DotNetCore_Web_Application.Entities;
+using Microsoft.EntityFrameworkCore;
+
 namespace DotNetCore_Web_Application
 {
     public class Program
@@ -8,7 +11,10 @@ namespace DotNetCore_Web_Application
 
             // Add services to the container.       //eklediðimiz servisi devreye alýyoruz
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-
+            builder.Services.AddDbContext<DatabaseContext>(opts =>
+            {
+                opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
