@@ -1,4 +1,6 @@
-﻿@*projenin ana şablonu burasıdır, esas gövde burasıdır.*@
+﻿@using System.Security.Claims;
+@using Microsoft.Extensions.Options;
+@*projenin ana şablonu burasıdır, esas gövde burasıdır.*@
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,14 +30,33 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item ms-auto">
-                            @*Accountcontrollerda login actiona giden bir link *@
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
-                        <li class="nav-item ">
-                            @*Accountcontrollerda login actiona giden bir link *@
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                        </li>
+           
+                        @*sign olunca true döner => SignInAsync methodu çalışır ve biz başarılı şekilde giriş yaparsak*@
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item ms-auto">
+                                @*Accountcontrollerda login actiona giden bir link *@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">
+                                    @*claimlerin içinde arama yapıyoruz*@
+                                    @User.FindFirst("Username")?.Value
+                                </a>
+                            </li>
+                            <li class="nav-item ms-auto">
+                                @*Accountcontrollerda login actiona giden bir link *@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item ms-auto">
+                                @*Accountcontrollerda login actiona giden bir link *@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                            <li class="nav-item ">
+                                @*Accountcontrollerda login actiona giden bir link *@
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

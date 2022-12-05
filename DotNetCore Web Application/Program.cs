@@ -1,4 +1,5 @@
 using DotNetCore_Web_Application.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
 namespace DotNetCore_Web_Application
@@ -15,6 +16,25 @@ namespace DotNetCore_Web_Application
             {
                 opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            
+            builder.Services
+                .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(opts=>
+                {
+                    //kullanýcýnýn tarayýcýsýnda cookie bilgileri bu isimle tutulacak
+                    opts.Cookie.Name=".DotNetCoreWebApplication.auth";
+                    //ne kadar süre tutulacak
+                    opts.ExpireTimeSpan=TimeSpan.FromDays(7);
+                    //cookie süresinin sürekli uzamasýný saðlamak için
+                    opts.SlidingExpiration=false;
+                    //kullanýcý login deðilse path yönlendirmesi
+                    opts.LoginPath="/Account/Login";
+                    opts.LoginPath="/Account/Logout";
+                    //yetkisi olmadýðýnda gideceði sayfa
+                    opts.AccessDeniedPath="/Home/AccessDenied";
+                 });
+
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -22,10 +42,10 @@ namespace DotNetCore_Web_Application
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(
