@@ -29,7 +29,7 @@ namespace DotNetCore_Web_Application
                     opts.SlidingExpiration=false;
                     //kullanýcý login deðilse path yönlendirmesi
                     opts.LoginPath="/Account/Login";
-                    opts.LoginPath="/Account/Logout";
+                    opts.LogoutPath="/Account/Logout";
                     //yetkisi olmadýðýnda gideceði sayfa
                     opts.AccessDeniedPath="/Home/AccessDenied";
                  });

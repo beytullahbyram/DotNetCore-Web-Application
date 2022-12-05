@@ -3,6 +3,7 @@ using DotNetCore_Web_Application.Entities;
 using DotNetCore_Web_Application.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NETCore.Encrypt.Extensions;
@@ -14,6 +15,7 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace DotNetCore_Web_Application.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
 
@@ -27,12 +29,12 @@ namespace DotNetCore_Web_Application.Controllers
 			_databaseContext = databaseContext;
 			_configuration = configuration;
 		}
-
+        [AllowAnonymous]
 		public IActionResult Login()
         {
             return View();
         }
-
+        [AllowAnonymous]
         [HttpPost]
         public IActionResult Login(LoginViewModel model)
         {
@@ -76,13 +78,12 @@ namespace DotNetCore_Web_Application.Controllers
             }
             return View(model); //varsa hata bunları görmek için tekrardan gönderdik
         }
-
-
-
+        [AllowAnonymous]
         public IActionResult Register()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpPost] 
         public IActionResult Register(RegisterViewModel model)
         {
