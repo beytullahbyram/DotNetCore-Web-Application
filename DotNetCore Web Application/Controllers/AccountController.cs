@@ -116,5 +116,10 @@ namespace DotNetCore_Web_Application.Controllers
         {
             return View();
         }
+        public IActionResult Logout()
+        {       
+            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction(nameof(Login));
+        }
     }
 }
