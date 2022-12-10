@@ -31,7 +31,10 @@ namespace DotNetCore_Web_Application.Controllers
 			_databaseContext = databaseContext;
 			_configuration = configuration;
 		}
-        [AllowAnonymous]
+
+
+		#region Login methods
+		[AllowAnonymous]
 		public IActionResult Login()
         {
             return View();
@@ -79,15 +82,10 @@ namespace DotNetCore_Web_Application.Controllers
 			}
 			return View(model); //varsa hata bunları görmek için tekrardan gönderdik
         }
+		#endregion
 
-		private string HashedString(string model)
-		{
-			string md5salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
-			string salted = model+ md5salt;
-			string hashed = salted.MD5();
-			return hashed;
-		}
 
+		#region Register methods
 		[AllowAnonymous]
         public IActionResult Register()
         {
@@ -121,15 +119,16 @@ namespace DotNetCore_Web_Application.Controllers
 
             return View();
         }
+		#endregion
 
 
-        public IActionResult Profil()
+		private string HashedString(string model)
 		{
-			ProfileInfoLoader();
-
-			return View();
+			string md5salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
+			string salted = model+ md5salt;
+			string hashed = salted.MD5();
+			return hashed;
 		}
-
 		private void ProfileInfoLoader()
 		{
 			Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -137,6 +136,14 @@ namespace DotNetCore_Web_Application.Controllers
 			ViewData["FullName"] = user.NameSurname;
 		}
 
+
+		#region Profil methods
+		public IActionResult Profil()
+		{
+			ProfileInfoLoader();
+
+			return View();
+		}
 
 		[HttpPost]
         public IActionResult ProfilChangeFullname([Required][StringLength(50)] string? fullname)//inputun nameini buraya aldık
@@ -173,8 +180,8 @@ namespace DotNetCore_Web_Application.Controllers
             //o yüzden bunu methoda aldıgımızda isvalide false olsa bile viewdatada ismimiz gözükecek
             return View("Profil");
         }
-
-        public IActionResult Logout()
+		#endregion
+		public IActionResult Logout()
         {       
             HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction(nameof(Login));

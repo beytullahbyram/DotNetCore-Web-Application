@@ -47,3 +47,13 @@
 		</form>
 	</div>
 </div>
+
+
+@section Scripts{
+	@if (ViewData["result"] == "ChangePasswordOK" && ViewData["result"] != null)
+	{
+		<script>
+			toastr["success"]("Şifreniz değiştirildi", "İşlem başarılı")
+		</script>
+	}
+w}
