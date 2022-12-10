@@ -1,0 +1,49 @@
+﻿@{
+	ViewData["Title"] = "Profil";
+}
+
+<div class="row">
+	@*soldan 4 birim ötele boşluk bırak*@
+	<div class="col-4 offset-4">
+		<h1 class="display-4 border-bottom text-center  pb-2">@ViewData["Title"]</h1>
+	</div>
+</div>
+
+<div class="row mt-3">
+	<div class="col-4">
+		<div class="col-mb4">
+			@*tüm hataları göster*@
+			<div asp-validation-summary="All"  class="text-danger small"></div>
+		</div>
+
+		<form method="post" asp-action="ProfilChangeFullname">
+			<div class="form-group">
+				<label class="form-label">New Password</label>
+				<div class="input-group mb-3">
+					@*ProfilChangeFullname actionuna model ile değil inputun name ile göndereceğiz*@
+					<input name="fullname" type="text" class="form-control" placeholder="John Doe" value="@ViewData["FullName"]">
+				  <button class="btn btn-outline-secondary" type="submit">Save</button>
+				</div>
+
+			</div>
+		</form>
+
+
+
+
+		<form method="post" asp-action="ProfilChangePassword">
+			<div class="form-group">
+				<label class="form-label">New Password</label>
+				<div class="input-group">
+					@*ProfilChangeFullname actionuna model ile değil inputun name ile göndereceğiz*@
+					<input name="password" type="password" class="form-control" placeholder="abc123/*-+" >
+					<button class="btn btn-outline-secondary" type="submit">Save</button>
+				</div>
+				@if (ViewData["result"] == "ChangePasswordOK" && ViewData["result"] != null)
+				{
+						<span class="text-success small">Password Changed</span>
+				}
+			</div>
+		</form>
+	</div>
+</div>

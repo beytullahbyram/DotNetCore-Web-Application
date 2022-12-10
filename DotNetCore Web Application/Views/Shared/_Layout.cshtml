@@ -30,13 +30,22 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-           
+
+
                         @*sign olunca true döner => SignInAsync methodu çalışır ve biz başarılı şekilde giriş yaparsak*@
                         @if(User.Identity.IsAuthenticated)
                         {
+                            if (User.IsInRole("admin"))
+                            {
+                                
+                            <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">Admin</a>
+                        </li>
+                            }
+
                             <li class="nav-item ms-auto">
                                 @*Accountcontrollerda login actiona giden bir link *@
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profile">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Profil">
                                     @*claimlerin içinde arama yapıyoruz*@
                                     @User.FindFirst("Username")?.Value
                                 </a>
