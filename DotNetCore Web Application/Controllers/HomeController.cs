@@ -8,13 +8,18 @@ namespace DotNetCore_Web_Application.Controllers
     [Authorize]
     public class HomeController : Controller
     {
-
+        
         public IActionResult Index()
         {
             return View();
         }
         [AllowAnonymous]
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
         {
             return View();
         }

@@ -1,0 +1,21 @@
+﻿@{
+	ViewData["Title"] = "Access Denied";
+}
+
+<div class="row">
+	@*soldan 4 birim ötele boşluk bırak*@
+	<div class="col-4 offset-4">
+		<h1 class="display-4 border-bottom text-center  pb-2">@ViewData["Title"]</h1>
+	</div>
+</div>
+
+<div class="row">
+	<div class="col">
+		<h1 class="text-center text-danger"><i class="fa-solid fa-user-slash fa-2x"></i></h1>
+		<p class="text-center">sayfaya erişim izniniz yoktur...</p>
+
+		<div class="text-center">
+			<a asp-action="Index" asp-controller="Home" class="btn btn-primary"> go to home pages...</a>
+		</div>
+	</div>
+</div>

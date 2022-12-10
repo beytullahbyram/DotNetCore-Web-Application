@@ -59,6 +59,7 @@ namespace DotNetCore_Web_Application.Controllers
                     
                     claims.Add(new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()));
                     claims.Add(new Claim("NameSurname", user.NameSurname ?? string.Empty));
+                    claims.Add(new Claim(ClaimTypes.Role, user.Role));
                     claims.Add(new Claim("Username", user.Username));
 
 
