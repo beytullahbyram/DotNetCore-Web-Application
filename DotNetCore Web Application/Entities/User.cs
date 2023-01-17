@@ -18,6 +18,9 @@ namespace DotNetCore_Web_Application.Entities
 		public string Passowrd { get; set; }
 		public bool? Locked { get; set; }=false;
 		public DateTime Created { get; set; }=DateTime.Now;
+		[StringLength(255)]
+		public string? ImageFileName { get; set; }="userimage.png";
+
 		[Required,StringLength(50)]
 		public string Role { get; set; }="user";
 

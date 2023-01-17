@@ -134,6 +134,7 @@ namespace DotNetCore_Web_Application.Controllers
 			Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
 			User user = _databaseContext.Users.FirstOrDefault(x => x.Id == userid);
 			ViewData["FullName"] = user.NameSurname;
+            ViewData["ProfilImage"] = user.ImageFileName;
 		}
 
 
@@ -180,6 +181,31 @@ namespace DotNetCore_Web_Application.Controllers
             //o yüzden bunu methoda aldıgımızda isvalide false olsa bile viewdatada ismimiz gözükecek
             return View("Profil");
         }
+
+        [HttpPost]
+        public IActionResult ProfilChangeImage([Required] IFormFile file)//inputun nameini buraya aldık
+        {
+            if (ModelState.IsValid)
+            {
+                Guid userid=new Guid( User.FindFirstValue(ClaimTypes.NameIdentifier));
+                User user= _databaseContext.Users.FirstOrDefault(x => x.Id== userid);
+                string filename=$"p_{userid}.jpg";
+                // stream senkron ve asenkron olarak okuma/yazma işlemlerini gerçekleştirir
+                Stream stream=new FileStream($"wwwroot/uploads/{filename}",FileMode.OpenOrCreate);//dosyayı sunucuya kaydederken copyto methodu ile o dosyayı nasıl kaydetmemiz gerektiğini file mode ile söylüyoruz
+                file.CopyTo(stream);    
+                stream.Close(); //kapatma
+                stream.Dispose(); //yok etme
+                user.ImageFileName=filename;//kullanıcının profil resmi veri tabanına id ile kayıtedildi
+                _databaseContext.SaveChanges();
+                return RedirectToAction(nameof(Profil));
+
+
+            }
+            ProfileInfoLoader();
+            return View("Profil");
+        }
+
+
 		#endregion
 		public IActionResult Logout()
         {       

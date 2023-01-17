@@ -3,50 +3,68 @@
 }
 
 <div class="row">
-	@*soldan 4 birim ötele boşluk bırak*@
+	@*soldan 4 birim ötele boşluk bırak*@ 
 	<div class="col-4 offset-4">
 		<h1 class="display-4 border-bottom text-center  pb-2">@ViewData["Title"]</h1>
 	</div>
 </div>
 
-<div class="row mt-3">
-	<div class="col-4">
+<div class="row mt-4">
+    <div class="col-12 offset-6 my-3">
 		<div class="col-mb4">
 			@*tüm hataları göster*@
-			<div asp-validation-summary="All"  class="text-danger small"></div>
+			<div asp-validation-summary="All" class="text-danger small"></div>
 		</div>
-
-		<form method="post" asp-action="ProfilChangeFullname">
-			<div class="form-group">
-				<label class="form-label">New Password</label>
-				<div class="input-group mb-3">
-					@*ProfilChangeFullname actionuna model ile değil inputun name ile göndereceğiz*@
-					<input name="fullname" type="text" class="form-control" placeholder="John Doe" value="@ViewData["FullName"]">
-				  <button class="btn btn-outline-secondary" type="submit">Save</button>
+	</div>
+    <div class="col-6">
+		<form method="post" asp-action="ProfilChangeImage" enctype="multipart/form-data">
+				<div class="text-center mb-3">
+					<img src="~/uploads/@ViewData["ProfilImage"]" width="100" height="100"  />
 				</div>
-
-			</div>
-		</form>
-
-
-
-
-		<form method="post" asp-action="ProfilChangePassword">
-			<div class="form-group">
-				<label class="form-label">New Password</label>
-				<div class="input-group">
-					@*ProfilChangeFullname actionuna model ile değil inputun name ile göndereceğiz*@
-					<input name="password" type="password" class="form-control" placeholder="abc123/*-+" >
-					<button class="btn btn-outline-secondary" type="submit">Save</button>
+            <div class="form-group mb-3">
+				<label class="form-label small">Profil Image</label>
+				<input type="file"  name="file"class="form-control"  accept=".jpg"/>
+				<div class="small">
+                    <span class="small text-secondary"></span>
+					Only jpg files
 				</div>
-				@if (ViewData["result"] == "ChangePasswordOK" && ViewData["result"] != null)
-				{
-						<span class="text-success small">Password Changed</span>
-				}
+				<button type="submit" class="btn btn-secondary" style="margin-top:10px">Save</button>
 			</div>
 		</form>
 	</div>
+
+
+		<div class="col-6">
+
+			<form method="post" asp-action="ProfilChangeFullname">
+				<div class="form-group">
+					<label class="form-label">New Username</label>
+					<div class="input-group mb-3">
+						@*ProfilChangeFullname actionuna model ile değil inputun name ile göndereceğiz*@
+						<input name="fullname" type="text" class="form-control" placeholder="John Doe" value="@ViewData["FullName"]">
+					  <button class="btn btn-outline-secondary" type="submit">Save</button>
+					</div>
+
+				</div>
+			</form>
+
+			<form method="post" asp-action="ProfilChangePassword">
+				<div class="form-group">
+					<label class="form-label">New Password</label>
+					<div class="input-group">
+						@*ProfilChangeFullname actionuna model ile değil inputun name ile göndereceğiz*@
+						<input name="password" type="password" class="form-control" placeholder="abc123/*-+" >
+						<button class="btn btn-outline-secondary" type="submit">Save</button>
+					</div>
+					@if (ViewData["result"] == "ChangePasswordOK" && ViewData["result"] != null)
+					{
+							<span class="text-success small">Password Changed</span>
+					}
+				</div>
+			</form>
+		</div>
 </div>
+
 
 
 @section Scripts{
@@ -56,4 +74,4 @@
 			toastr["success"]("Şifreniz değiştirildi", "İşlem başarılı")
 		</script>
 	}
-w}
+}
