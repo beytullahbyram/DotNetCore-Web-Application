@@ -5,6 +5,11 @@ namespace DotNetCore_Web_Application.Models
 	public class RegisterViewModel : LoginViewModel
 	{
 		//attribute tanımlama
+
+		[Required(ErrorMessage ="NameSurname is required")]
+		[StringLength(15,ErrorMessage ="NameSurname can be max 15 character")]
+		public string NameSurname { get; set; }
+
 		[Required(ErrorMessage ="Username is required")]
 		[StringLength(15,ErrorMessage ="Username can be max 15 character")]
 		public string Username { get; set; }

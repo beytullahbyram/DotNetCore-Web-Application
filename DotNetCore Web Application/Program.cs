@@ -14,7 +14,8 @@ namespace DotNetCore_Web_Application
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddDbContext<DatabaseContext>(opts =>
             {
-                opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
+                    ,opts => opts.EnableRetryOnFailure());  
             });
             
             builder.Services

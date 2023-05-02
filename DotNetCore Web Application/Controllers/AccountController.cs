@@ -106,6 +106,7 @@ namespace DotNetCore_Web_Application.Controllers
                 string haspswd= HashedString(model.Password);
                 User user = new()
                 {
+                   NameSurname = model.NameSurname,
                    Username= model.Username,
                    Passowrd=haspswd
                 };
