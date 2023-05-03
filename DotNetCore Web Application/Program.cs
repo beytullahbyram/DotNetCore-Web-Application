@@ -1,6 +1,7 @@
 using DotNetCore_Web_Application.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace DotNetCore_Web_Application
 {
@@ -12,6 +13,8 @@ namespace DotNetCore_Web_Application
 
             // Add services to the container.       //eklediðimiz servisi devreye alýyoruz
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            //Çalýþan assembly dosyasýný tarayarak Map dosyasýný çalýþtýrýr.
+            builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
             builder.Services.AddDbContext<DatabaseContext>(opts =>
             {
                 opts.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")
