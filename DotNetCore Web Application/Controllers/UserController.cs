@@ -24,7 +24,8 @@ namespace DotNetCore_Web_Application.Controllers
             List<UserModel> model = _databaseContext.Users.ToList().Select(u => _mapper.Map<UserModel>(u)).ToList();
             return View(model);
         }
-        [HttpGet]
+		#region Create
+		[HttpGet]
         public IActionResult Create()
         {
             return View();
@@ -34,6 +35,11 @@ namespace DotNetCore_Web_Application.Controllers
         {
             if (ModelState.IsValid) 
             {
+                if (_databaseContext.Users.Any(x=>x.Username.ToLower() == model.Username.ToLower()))
+                {
+                    ModelState.AddModelError(nameof(model.Username),"UserName Already avaliable");
+                    return View(model);   
+                }
                 User user = _mapper.Map<User>(model); //modeli users'a çevir
                 _databaseContext.Users.Add(user);   
                 _databaseContext.SaveChanges();
@@ -42,5 +48,36 @@ namespace DotNetCore_Web_Application.Controllers
             }
             return View(model);
         }
-    }
+		#endregion
+
+
+        #region Edit
+		[HttpGet]
+        public IActionResult Edit(Guid id)
+        {
+            User user=_databaseContext.Users.Find(id);
+            EditUserModel model=_mapper.Map<EditUserModel>(user);   
+
+            return View(model );
+        }
+        [HttpPost]
+        public IActionResult Edit(Guid id,EditUserModel model)
+        {
+            if (ModelState.IsValid) 
+            {
+                if (_databaseContext.Users.Any(x=>x.Username.ToLower() == model.Username.ToLower() && x.Id != id))
+                {
+                    ModelState.AddModelError(nameof(model.Username),"UserName Already avaliable");
+                    return View(model);   
+                }
+
+                User user = _databaseContext.Users.Find(id);
+                _mapper.Map(model, user); //modeli user'a çevir  
+                _databaseContext.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
+		#endregion
+	}
 }
