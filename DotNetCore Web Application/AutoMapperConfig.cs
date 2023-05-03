@@ -11,6 +11,8 @@ namespace DotNetCore_Web_Application
 			//Mapping
 			//User classı UserModel classına çevirir.ReverseMap ile tam tersi işlemi yapar.
 			CreateMap<User,UserModel>().ReverseMap();
+			CreateMap<User,CreateUserModel>().ReverseMap();
+
 		}
 	}
 }

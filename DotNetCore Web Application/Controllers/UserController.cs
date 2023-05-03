@@ -24,5 +24,23 @@ namespace DotNetCore_Web_Application.Controllers
             List<UserModel> model = _databaseContext.Users.ToList().Select(u => _mapper.Map<UserModel>(u)).ToList();
             return View(model);
         }
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult Create(CreateUserModel model)
+        {
+            if (ModelState.IsValid) 
+            {
+                User user = _mapper.Map<User>(model); //modeli users'a çevir
+                _databaseContext.Users.Add(user);   
+                _databaseContext.SaveChanges();
+
+                return RedirectToAction(nameof(Index));
+            }
+            return View(model);
+        }
     }
 }

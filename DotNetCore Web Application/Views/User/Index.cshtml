@@ -9,7 +9,13 @@
 	</div>
 </div>
 
-<div class="row">
+<div class="row mb-3">
+	<div class="col">
+		<a asp-action="Create" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2"></i>	New User</a>
+	</div>
+</div>
+
+<div class="row mb-3">
 	<div class="col">
 		<table class="table table-hover table-sm">
 			<thead>
@@ -40,12 +46,10 @@
 						</td>
 						<td>@user.Role</td>
 						<td>@user.Created</td>
-						<td>
-							<button type="button" class="btn btn-info btn-sm"><i class="fa fa-edit me-2"></i>Edit</button>
-							<button type="button" class="btn btn-daner btn-sm"><i class="fa fa-trash me-2"></i>Remove</button>
-
+						<td class="text-end">
+							<a asp-action="Edit" asp-route-id="@user.Id"  class="btn btn-info btn-sm"><i class="fa fa-edit me-2"></i>Edit</a>
+							<a asp-action="Delete" asp-route-id="@user.Id"  class="btn btn-daner btn-sm"><i class="fa fa-trash me-2"></i>Remove</a>
 						</td>
-
 					</tr>
 				}
 			</tbody>
