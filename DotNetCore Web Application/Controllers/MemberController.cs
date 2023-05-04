@@ -27,5 +27,28 @@ namespace DotNetCore_Web_Application.Controllers
             List<UserModel> model = _databaseContext.Users.ToList().Select(u => _mapper.Map<UserModel>(u)).ToList();
 			return PartialView("_MemberListPartial",model);
 		}
+
+		public IActionResult AddNewUserPartial()
+		{
+			return PartialView("_AddNewUserPartial",new CreateUserModel());
+		}
+		[HttpPost]
+		public IActionResult AddNewUser(CreateUserModel model) 
+		{
+            if (ModelState.IsValid) 
+            {
+				if (_databaseContext.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
+				{
+					ModelState.AddModelError(nameof(model.Username), "UserName Already avaliable");
+					return View(model);
+				}
+				User user = _mapper.Map<User>(model); //modeli users'a çevir
+				_databaseContext.Users.Add(user);
+				_databaseContext.SaveChanges();
+			return PartialView("_AddNewUserPartial",new CreateUserModel(){ Done="user Added."});
+
+			}
+			return PartialView("_AddNewUserPartial",model);
+		}
 	}
 } 

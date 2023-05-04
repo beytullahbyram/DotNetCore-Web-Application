@@ -28,7 +28,7 @@ namespace DotNetCore_Web_Application
                     //kullanýcýnýn tarayýcýsýnda cookie bilgileri bu isimle tutulacak
                     opts.Cookie.Name=".DotNetCoreWebApplication.auth";
                     //ne kadar süre tutulacak
-                    opts.ExpireTimeSpan=TimeSpan.FromMinutes(2.0);
+                    opts.ExpireTimeSpan=TimeSpan.FromMinutes(10.0);
                     //cookie süresinin sürekli uzamasýný saðlamak için
                     opts.SlidingExpiration=false;
                     //kullanýcý login deðilse path yönlendirmesi

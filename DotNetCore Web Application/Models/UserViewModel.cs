@@ -43,8 +43,10 @@ namespace DotNetCore_Web_Application.Models
         [Required]
         [StringLength(50)]
         public string Role { get; set; } = "user";
+        public string? Done { get; set; }
 
-	}
+
+    }
     
     
     public class EditUserModel
@@ -65,6 +67,5 @@ namespace DotNetCore_Web_Application.Models
         [StringLength(50)]
         public string Role { get; set; } = "user";
 
-        //public string? Done { get; set; }
     }
 }

@@ -10,8 +10,13 @@
 
 <div class="row mb-3">
 	<div class="col">
+		<a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#ModalAdd"
+		   data-ajax="true" data-ajax-method="get" data-ajax-url="/Member/AddNewUserPartial" data-ajax-update="#ModalAddContent">
+		   <i class="fa fa-plus me-2"></i>Create User</a>
+
 		@*data ajax'ı burada çalıştır, url= hangi urlden çekilecek (data partial viewden çekilecek), update ile panel nesnesinin içine yerleştri*@
-		<a data-ajax="true" data-ajax-method="Get" data-ajax-url="/Member/MemberListPartial" data-ajax-update="#panel" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2"></i>Reload</a>
+		<a id="refresh" data-ajax="true" data-ajax-method="Get" data-ajax-url="/Member/MemberListPartial" data-ajax-update="#panel" 
+		class="btn btn-secondary btn-sm"><i class="fa fa-sync-alt me-2"></i>Reload</a>
 	</div>
 </div>
 
@@ -22,10 +27,19 @@
 		</div>
 	</div>
 </div>
+
+
+<div class="modal fade" id="ModalAdd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div id="ModalAddContent" class="modal-dialog">
+
+	</div>
+</div>
 @section Scripts{
 	<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
 
 	<script>
-
+		$(function(){
+			refresh.click();
+		});
 	</script>
 }
