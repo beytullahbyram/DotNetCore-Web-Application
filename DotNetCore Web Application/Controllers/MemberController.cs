@@ -83,5 +83,20 @@ namespace DotNetCore_Web_Application.Controllers
 			return PartialView("_EditUserPartial",model);
         }
 		#endregion
+
+
+		public IActionResult DeleteUser(Guid id)
+        {
+            User user= _databaseContext.Users.Find(id);
+
+		    if (user != null)
+            {
+                _databaseContext.Users.Remove(user);
+                _databaseContext.SaveChanges();
+            }
+			return MemberListPartial();
+
+		}
+
 	}
 } 
