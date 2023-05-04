@@ -2,6 +2,7 @@
 using DotNetCore_Web_Application.Entities;
 using DotNetCore_Web_Application.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace DotNetCore_Web_Application.Controllers
 {
@@ -79,5 +80,30 @@ namespace DotNetCore_Web_Application.Controllers
             return View(model);
         }
 		#endregion
+
+
+
+        #region Delete
+        public IActionResult Delete(Guid id) 
+        {
+            User user= _databaseContext.Users.Find(id);
+            
+            var httpContext = HttpContext;
+            var userLoginId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            if (user.Id.ToString() != userLoginId)
+            {
+                if (user != null)
+                {
+                    _databaseContext.Users.Remove(user);
+                    _databaseContext.SaveChanges();
+                    return RedirectToAction(nameof(Index));    
+                }
+            }
+            return RedirectToAction(nameof(Index));    
+
+        }
+
+        
+        #endregion
 	}
 }

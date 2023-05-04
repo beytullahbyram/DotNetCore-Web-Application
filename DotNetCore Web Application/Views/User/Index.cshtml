@@ -48,7 +48,9 @@
 						<td>@user.Created</td>
 						<td class="text-end">
 							<a asp-action="Edit" asp-route-id="@user.Id"  class="btn btn-info btn-sm"><i class="fa fa-edit me-2"></i>Edit</a>
-							<a asp-action="Delete" asp-route-id="@user.Id"  class="btn btn-daner btn-sm"><i class="fa fa-trash me-2"></i>Remove</a>
+							<a asp-action="Delete" asp-route-id="@user.Id"
+							onclick="return confirm('Are you sure wan to delete this user : @user.NameSurname ')"
+							class="btn btn-daner btn-sm"><i class="fa fa-trash me-2"></i>Remove</a>
 						</td>
 					</tr>
 				}
