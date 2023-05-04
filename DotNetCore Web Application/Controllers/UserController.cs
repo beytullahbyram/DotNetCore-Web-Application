@@ -82,7 +82,6 @@ namespace DotNetCore_Web_Application.Controllers
 		#endregion
 
 
-
         #region Delete
         public IActionResult Delete(Guid id) 
         {
@@ -105,5 +104,7 @@ namespace DotNetCore_Web_Application.Controllers
 
         
         #endregion
+
+
 	}
 }

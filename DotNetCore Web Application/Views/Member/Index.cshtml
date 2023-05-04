@@ -1,0 +1,31 @@
+﻿@{
+	ViewData["Title"] = "Members";
+}
+
+<div class="container">
+	<div class="row">
+		<h2>@ViewData["Title"]</h2>
+	</div>
+</div>
+
+<div class="row mb-3">
+	<div class="col">
+		@*data ajax'ı burada çalıştır, url= hangi urlden çekilecek (data partial viewden çekilecek), update ile panel nesnesinin içine yerleştri*@
+		<a data-ajax="true" data-ajax-method="Get" data-ajax-url="/Member/MemberListPartial" data-ajax-update="#panel" class="btn btn-primary btn-sm"><i class="fa fa-plus me-2"></i>Reload</a>
+	</div>
+</div>
+
+<div class="row mb-3">
+	<div class="col">
+		<div id="panel">
+
+		</div>
+	</div>
+</div>
+@section Scripts{
+	<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+
+	<script>
+
+	</script>
+}
