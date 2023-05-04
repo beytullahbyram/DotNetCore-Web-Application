@@ -40,7 +40,7 @@ namespace DotNetCore_Web_Application.Controllers
 				if (_databaseContext.Users.Any(x => x.Username.ToLower() == model.Username.ToLower()))
 				{
 					ModelState.AddModelError(nameof(model.Username), "UserName Already avaliable");
-					return View(model);
+			return PartialView("_AddNewUserPartial",model);
 				}
 				User user = _mapper.Map<User>(model); //modeli users'a çevir
 				_databaseContext.Users.Add(user);
@@ -50,5 +50,38 @@ namespace DotNetCore_Web_Application.Controllers
 			}
 			return PartialView("_AddNewUserPartial",model);
 		}
+
+
+		#region Edit
+		public IActionResult EditUserPartial(Guid id) 
+		{
+            User user=_databaseContext.Users.Find(id);
+            EditUserModel model=_mapper.Map<EditUserModel>(user);   
+
+
+			return PartialView("_EditUserPartial",model);
+		}
+
+
+		[HttpPost]
+        public IActionResult EditUser(Guid id,EditUserModel model)
+        {
+            if (ModelState.IsValid) 
+            {
+                if (_databaseContext.Users.Any(x=>x.Username.ToLower() == model.Username.ToLower() && x.Id != id))
+                {
+                    ModelState.AddModelError(nameof(model.Username),"UserName Already avaliable");
+			return PartialView("_EditUserPartial",model); 
+                }
+
+                User user = _databaseContext.Users.Find(id);
+                _mapper.Map(model, user); 
+                _databaseContext.SaveChanges();
+			return PartialView("_EditUserPartial",new EditUserModel(){ Done="user edited."});
+            }
+
+			return PartialView("_EditUserPartial",model);
+        }
+		#endregion
 	}
 } 
