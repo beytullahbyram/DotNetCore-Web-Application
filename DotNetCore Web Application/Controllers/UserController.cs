@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DotNetCore_Web_Application.Entities;
+using DotNetCore_Web_Application.Helpers;
 using DotNetCore_Web_Application.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -10,13 +11,15 @@ namespace DotNetCore_Web_Application.Controllers
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
+        private readonly IHasherMD5 _hasherMD5;
 
 
-		public UserController(DatabaseContext databaseContext, IMapper mapper)
+		public UserController(DatabaseContext databaseContext, IMapper mapper, IHasherMD5 hasherMD5)
 		{
-            //injection
+			//injection
 			_databaseContext = databaseContext;
-            _mapper = mapper;
+			_mapper = mapper;
+			_hasherMD5 = hasherMD5;
 		}
 
 		public IActionResult Index()
@@ -41,7 +44,9 @@ namespace DotNetCore_Web_Application.Controllers
                     ModelState.AddModelError(nameof(model.Username),"UserName Already avaliable");
                     return View(model);   
                 }
-                User user = _mapper.Map<User>(model); //modeli users'a çevir
+                User user = _mapper.Map<User>(model); //convert model to users
+                user.Passowrd = _hasherMD5.HashedString(model.Passowrd);
+
                 _databaseContext.Users.Add(user);   
                 _databaseContext.SaveChanges();
 

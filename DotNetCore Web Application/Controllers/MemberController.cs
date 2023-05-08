@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DotNetCore_Web_Application.Entities;
+using DotNetCore_Web_Application.Helpers;
 using DotNetCore_Web_Application.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,12 +11,14 @@ namespace DotNetCore_Web_Application.Controllers
 
 		private readonly DatabaseContext _databaseContext;
         private readonly IMapper _mapper;
+        private readonly IHasherMD5 _hasherMD5;
 
 
-		public MemberController(DatabaseContext databaseContext, IMapper mapper)
+		public MemberController(DatabaseContext databaseContext, IMapper mapper, IHasherMD5 hasherMD5)
 		{
 			_databaseContext = databaseContext;
-            _mapper = mapper;
+			_mapper = mapper;
+			_hasherMD5 = hasherMD5;
 		}
 		public IActionResult Index()
 		{
@@ -43,6 +46,8 @@ namespace DotNetCore_Web_Application.Controllers
 			return PartialView("_AddNewUserPartial",model);
 				}
 				User user = _mapper.Map<User>(model); //modeli users'a çevir
+				user.Passowrd=_hasherMD5.HashedString(model.Passowrd);
+
 				_databaseContext.Users.Add(user);
 				_databaseContext.SaveChanges();
 			return PartialView("_AddNewUserPartial",new CreateUserModel(){ Done="user Added."});

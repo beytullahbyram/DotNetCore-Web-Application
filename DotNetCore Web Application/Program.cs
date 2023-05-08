@@ -1,4 +1,5 @@
 using DotNetCore_Web_Application.Entities;
+using DotNetCore_Web_Application.Helpers;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -11,9 +12,9 @@ namespace DotNetCore_Web_Application
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.       //eklediðimiz servisi devreye alýyoruz
+            // Add services to the container.       //we activate the service we added
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            //Çalýþan assembly dosyasýný tarayarak Map dosyasýný çalýþtýrýr.
+            //Runs the Map file by scanning the running assembly file.
             builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly()); 
             builder.Services.AddDbContext<DatabaseContext>(opts =>
             {
@@ -21,20 +22,23 @@ namespace DotNetCore_Web_Application
                     ,opts => opts.EnableRetryOnFailure());  
             });
             
+            //using HasherMD5 class when IHasherMD5 interfaces called
+            builder.Services.AddScoped<IHasherMD5,HasherMD5>();
+
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(opts=>
                 {
-                    //kullanýcýnýn tarayýcýsýnda cookie bilgileri bu isimle tutulacak
+                    //cookie information will be stored in the user's browser with this name
                     opts.Cookie.Name=".DotNetCoreWebApplication.auth";
-                    //ne kadar süre tutulacak
+                    //how long will it be kept
                     opts.ExpireTimeSpan=TimeSpan.FromMinutes(10.0);
-                    //cookie süresinin sürekli uzamasýný saðlamak için
+                    //To ensure the continuous extension of the cookie period
                     opts.SlidingExpiration=false;
-                    //kullanýcý login deðilse path yönlendirmesi
+                    //path redirection if user is not logged in
                     opts.LoginPath="/Account/Login";
                     opts.LogoutPath="/Account/Logout";
-                    //yetkisi olmadýðýnda gideceði sayfa
+                    //page to go when not authorized
                     opts.AccessDeniedPath="/Home/AccessDenied";
                  });
 

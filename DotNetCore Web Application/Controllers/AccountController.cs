@@ -1,5 +1,6 @@
 ﻿using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
 using DotNetCore_Web_Application.Entities;
+using DotNetCore_Web_Application.Helpers;
 using DotNetCore_Web_Application.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -26,10 +27,13 @@ namespace DotNetCore_Web_Application.Controllers
         //kısaca account classını databasecontext sınıfına bağımlı yaptık
         private readonly DatabaseContext _databaseContext;
         private readonly IConfiguration _configuration;
-		public AccountController(DatabaseContext databaseContext, IConfiguration configuration)
+        private readonly IHasherMD5 _hasherMD5;
+
+		public AccountController(DatabaseContext databaseContext, IConfiguration configuration, IHasherMD5 HasherMD5)
 		{
 			_databaseContext = databaseContext;
 			_configuration = configuration;
+            _hasherMD5= HasherMD5;
 		}
 
 
@@ -45,7 +49,7 @@ namespace DotNetCore_Web_Application.Controllers
         {
             if (ModelState.IsValid)//Herhangi bir hata eklenip eklenmediğini gösterir 
 			{
-				string hashedpswd = HashedString(model.Password);
+				string hashedpswd = _hasherMD5.HashedString(model.Password);
 				//_databaseContext.Users.FirstOrDefault(p=>p.Passowrd==hashedpswd);
 				User user = _databaseContext.Users.SingleOrDefault(x => x.Username.ToLower() == model.Username.ToLower() && x.Passowrd == hashedpswd);
 				if (user != null)
@@ -103,7 +107,7 @@ namespace DotNetCore_Web_Application.Controllers
                     return View();
                 }
                 //appsettings.json dosyasındaki md5salt değişkenine ulaştık
-                string haspswd= HashedString(model.Password);
+                string haspswd = _hasherMD5.HashedString(model.Password);
                 User user = new()
                 {
                    NameSurname = model.NameSurname,
@@ -122,14 +126,6 @@ namespace DotNetCore_Web_Application.Controllers
         }
 		#endregion
 
-
-		private string HashedString(string model)
-		{
-			string md5salt = _configuration.GetValue<string>("AppSettings:MD5Salt");
-			string salted = model+ md5salt;
-			string hashed = salted.MD5();
-			return hashed;
-		}
 		private void ProfileInfoLoader()
 		{
 			Guid userid = new Guid(User.FindFirstValue(ClaimTypes.NameIdentifier));
@@ -171,7 +167,7 @@ namespace DotNetCore_Web_Application.Controllers
             {
                 Guid userid=new Guid( User.FindFirstValue(ClaimTypes.NameIdentifier));
                 User user= _databaseContext.Users.FirstOrDefault(x => x.Id== userid);
-                string hashedpswd=HashedString(password);
+                string hashedpswd=_hasherMD5.HashedString(password);
                 user.Passowrd=hashedpswd;
                 _databaseContext.SaveChanges();
                 //return RedirectToAction(nameof(Profil));
